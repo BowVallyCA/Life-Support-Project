@@ -7,6 +7,7 @@ public class HoldOn : MonoBehaviour, IButtonListener
     private PlayerInputs inputObject;
 
     public event Action slowlyDying;
+    public event Action holdOn;
 
     private void Awake()
     {
@@ -23,7 +24,7 @@ public class HoldOn : MonoBehaviour, IButtonListener
 
     public void ButtonPressed(ButtonInfo pressedInfo)
     {
-
+        holdOn?.Invoke();
     }
 
     public void ButtonReleased(ButtonInfo releasedInfo)
