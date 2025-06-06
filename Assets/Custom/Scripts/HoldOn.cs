@@ -5,9 +5,11 @@ public class HoldOn : MonoBehaviour, IButtonListener
 {
     private ButtonInfo _currentButton;
     private PlayerInputs inputObject;
+    private bool isStart = true;
 
     public event Action slowlyDying;
     public event Action holdOn;
+    public event Action startGame;
 
     private void Awake()
     {
@@ -24,6 +26,12 @@ public class HoldOn : MonoBehaviour, IButtonListener
 
     public void ButtonPressed(ButtonInfo pressedInfo)
     {
+        if(isStart == true)
+        {
+            startGame?.Invoke();
+            isStart = false;
+        }
+
         holdOn?.Invoke();
     }
 
