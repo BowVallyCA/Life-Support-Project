@@ -11,10 +11,15 @@ public class GameEventsManager : MonoBehaviour
     [SerializeField] private float minTimeValue = 0f;
     [SerializeField] private float maxTimeValue = 10f;
 
+    [SerializeField] private GameObject _tappingUI;
+    [SerializeField] private Transform _canvasParent;
+
     private Timer currentTimer;
 
     // Use this to queue actions back to main thread
     private Action mainThreadAction;
+
+    public event Action startNewGameEvent;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -60,6 +65,7 @@ public class GameEventsManager : MonoBehaviour
 
     private void OnTimerFinished()
     {
+        GameObject newObject = Instantiate(_tappingUI, _canvasParent);
         Debug.Log("Timer finished, starting a new one.");
     }
 }

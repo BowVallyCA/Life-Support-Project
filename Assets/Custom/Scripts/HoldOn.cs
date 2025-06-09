@@ -1,43 +1,50 @@
 using System;
 using UnityEngine;
 
-public class HoldOn : MonoBehaviour, IButtonListener
+public class HoldOn : MonoBehaviour
 {
-    private ButtonInfo _currentButton;
-    private PlayerInputs inputObject;
+    [SerializeField] private ButtonManager _buttonManager;
+    [SerializeField] private AudioSource _breathAudioSource;
+
     private bool isStart = true;
 
     public event Action slowlyDying;
     public event Action holdOn;
     public event Action startGame;
 
-    private void Awake()
+    private void OnEnable()
     {
-        _currentButton.CurrentState = ButtonState.Released;
-
-        var inputObject = FindFirstObjectByType<PlayerInputs>();
-        inputObject.RegisterListener(this);
+        _buttonManager.buttonPressed += ButtonEventPressed;
+        _buttonManager.buttonReleased += ButtonEventReleased;
+        _buttonManager.buttonHeld += ButtonEventHeld;
     }
 
-    public void ButtonHeld(ButtonInfo heldInfo)
+    private void OnDisable()
     {
-        Debug.Log("Button is being held down");
+        _buttonManager.buttonPressed -= ButtonEventPressed;
+        _buttonManager.buttonReleased -= ButtonEventReleased;
+        _buttonManager.buttonHeld -= ButtonEventHeld;
     }
 
-    public void ButtonPressed(ButtonInfo pressedInfo)
+    public void ButtonEventHeld()
     {
-        if(isStart == true)
+
+    }
+
+    public void ButtonEventPressed()
+    {
+        if (isStart == true)
         {
             startGame?.Invoke();
             isStart = false;
         }
 
         holdOn?.Invoke();
+        _breathAudioSource.Play();
     }
 
-    public void ButtonReleased(ButtonInfo releasedInfo)
+    public void ButtonEventReleased()
     {
-        Debug.Log("Button has been released");
         slowlyDying?.Invoke();
     }
 }

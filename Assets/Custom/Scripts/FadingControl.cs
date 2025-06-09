@@ -4,6 +4,7 @@ public class FadingControl : MonoBehaviour
 {
     [SerializeField] private HoldOn _holdOn;
     [SerializeField] private Animator _fadeInAnim;
+    [SerializeField] private GameObject _deathScreen;
 
     private void OnEnable()
     {
@@ -27,8 +28,10 @@ public class FadingControl : MonoBehaviour
         _fadeInAnim.Play("Fade Out");
     }
 
-    private void GameOver()
+    public void GameOver()
     {
+        Time.timeScale = 0f;
+        _deathScreen.SetActive(true);
         Debug.Log("You died, may you rest in peace :(");
     }
 }

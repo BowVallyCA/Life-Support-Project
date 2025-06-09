@@ -5,6 +5,7 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] private HoldOn _holdOn;
     [SerializeField] private Animator _animator;
+    [SerializeField] private AudioSource _breathAudioSource;
 
     private void OnEnable()
     {
@@ -25,5 +26,6 @@ public class GameManager : MonoBehaviour
     private void StartGame()
     {
         _animator.Play("Fade");
+        _breathAudioSource.Play();
     }
 }
