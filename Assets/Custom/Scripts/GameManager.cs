@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private HoldOn _holdOn;
+    [SerializeField] private HoldOn  _holdOn;
     [SerializeField] private Animator _animator;
     [SerializeField] private AudioSource _breathAudioSource;
 

@@ -13,6 +13,7 @@ public class GameEventsManager : MonoBehaviour
 
     [SerializeField] private GameObject _tappingUI;
     [SerializeField] private Transform _canvasParent;
+    [SerializeField] private ButtonManager _buttonManager;
 
     private Timer currentTimer;
 
@@ -20,12 +21,6 @@ public class GameEventsManager : MonoBehaviour
     private Action mainThreadAction;
 
     public event Action startNewGameEvent;
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        SetNextEvent();
-    }
 
     // Update is called once per frame
     void Update()
@@ -37,6 +32,16 @@ public class GameEventsManager : MonoBehaviour
             mainThreadAction = null;
         }
     }
+    private void OnEnable()
+    {
+        _buttonManager.buttonPressed += StartTimer;
+    }
+
+    private void OnDisable()
+    {
+        _buttonManager.buttonPressed -= StartTimer;
+    }
+
 
     private void SetNextEvent()
     {
@@ -59,7 +64,7 @@ public class GameEventsManager : MonoBehaviour
         mainThreadAction = () =>
         {
             OnTimerFinished();
-            SetNextEvent();  // Restart timer with new random interval
+            //SetNextEvent();  // Restart timer with new random interval
         };
     }
 
@@ -67,5 +72,10 @@ public class GameEventsManager : MonoBehaviour
     {
         GameObject newObject = Instantiate(_tappingUI, _canvasParent);
         Debug.Log("Timer finished, starting a new one.");
+    }
+
+    public void StartTimer()
+    {
+        SetNextEvent();
     }
 }

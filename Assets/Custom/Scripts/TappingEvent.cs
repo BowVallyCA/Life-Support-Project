@@ -1,4 +1,4 @@
-using Unity.VisualScripting;
+using System;
 using UnityEngine;
 
 public class TappingEvent : MonoBehaviour
@@ -10,11 +10,17 @@ public class TappingEvent : MonoBehaviour
     private int timesButtonPressed = 0;
     private float timeTillDeath = 10f;
 
+
+
     private void Awake()
     {
         _buttonManager = FindFirstObjectByType<ButtonManager>();
         _tapIconLayout = GameObject.Find("TapIconLayout");
         _fadeControl = FindFirstObjectByType<FadingControl>();
+
+        HoldOn holdOn = FindFirstObjectByType<HoldOn>();
+        holdOn.enabled = false;
+        holdOn.ButtonEventReleased();
     }
 
     private void Update()
@@ -33,11 +39,20 @@ public class TappingEvent : MonoBehaviour
     private void OnEnable()
     {
         _buttonManager.buttonPressed += ButtonEventPressed;
+        _buttonManager.buttonReleased += ButtonEventReleased;
+        _buttonManager.buttonHeld += ButtonEventHeld;
     }
 
     private void OnDisable()
     {
         _buttonManager.buttonPressed -= ButtonEventPressed;
+        _buttonManager.buttonReleased -= ButtonEventReleased;
+        _buttonManager.buttonHeld -= ButtonEventHeld;
+    }
+
+    public void ButtonEventHeld()
+    {
+        //I dont need this fuction in the script however if I dont have it I get errors.
     }
 
     public void ButtonEventPressed()
@@ -46,13 +61,25 @@ public class TappingEvent : MonoBehaviour
         {
             timesButtonPressed += 1;
             Destroy(_tapIconLayout.transform.GetChild(0).gameObject);
-            Debug.Log("Tapped button, need ... more");
         }
         else
         {
             timesButtonPressed = 0;
             Destroy(gameObject);
-            Debug.Log("Saved yourself from having a heart attack");
         }
+    }
+
+    public void ButtonEventReleased()
+    {
+        //I dont need this fuction in the script however if I dont have it I get errors.
+    }
+
+    private void OnDestroy()
+    {
+        GameEventsManager eventTimer = FindFirstObjectByType<GameEventsManager>();
+        eventTimer.StartTimer();
+
+        HoldOn holdOn = FindFirstObjectByType<HoldOn>();
+        holdOn.enabled = true;
     }
 }

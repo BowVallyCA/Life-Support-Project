@@ -25,19 +25,16 @@ public class ButtonManager : MonoBehaviour, IButtonListener
 
     public void ButtonHeld(ButtonInfo heldInfo)
     {
-        Debug.Log("Button is being held down");
         buttonHeld.Invoke();
     }
 
     public void ButtonPressed(ButtonInfo pressedInfo)
     {
-        Debug.Log("Button has been pressed");
         buttonPressed.Invoke();
     }
 
     public void ButtonReleased(ButtonInfo releasedInfo)
     {
-        Debug.Log("Button has been released");
         buttonReleased.Invoke();
     }
 }

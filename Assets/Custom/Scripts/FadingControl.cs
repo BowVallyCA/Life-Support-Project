@@ -32,6 +32,5 @@ public class FadingControl : MonoBehaviour
     {
         Time.timeScale = 0f;
         _deathScreen.SetActive(true);
-        Debug.Log("You died, may you rest in peace :(");
     }
 }
